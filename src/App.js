@@ -291,21 +291,25 @@ function App() {
   return (
     <div className="app-container" onKeyDown={handleKeyDown} tabIndex={0}>
       <div className="flow-container" ref={reactFlowWrapper}>
-        <div className="button-container">
-          {Object.values(NODE_TYPES).map((type) => (
-            <button key={type} onClick={() => addNode(type)}>
-              Add {type.replace("Node", "")}
-            </button>
-          ))}
-          <button onClick={resetFlow}>Reset</button>
+        <div className="top-controls">
+          <div className="button-container">
+            {Object.values(NODE_TYPES).map((type) => (
+              <button key={type} onClick={() => addNode(type)}>
+                Add {type.replace("Node", "")}
+              </button>
+            ))}
+            <button onClick={resetFlow}>Reset</button>
+          </div>
+          
+          <SearchBar onSearch={handleSearch} />
         </div>
-        
-        <SearchBar onSearch={handleSearch} />
-        
-        <ImportExportButtons 
-          onImport={handleImport}
-          onExport={exportToJson}
-        />
+
+        <div className="bottom-controls">
+          <ImportExportButtons 
+            onImport={handleImport}
+            onExport={exportToJson}
+          />
+        </div>
 
         {validationErrors.length > 0 && (
           <div className="alert">
