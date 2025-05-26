@@ -293,6 +293,8 @@
   background-color: #3a3a3a;
   color: #ffffff;
   border-color: #4a4a4a;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .react-flow__node-default,
@@ -301,14 +303,53 @@
   background-color: #3a3a3a;
   color: #ffffff;
   border-color: #4a4a4a;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .react-flow__handle {
   background-color: #5a5a5a;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #3a3a3a;
+  transition: all 0.2s ease;
+}
+
+.react-flow__handle:hover {
+  background-color: #2196F3;
+  transform: scale(1.2);
+  cursor: crosshair;
+}
+
+.react-flow__handle-connecting {
+  background-color: #2196F3;
+  transform: scale(1.2);
+}
+
+.react-flow__handle-valid {
+  background-color: #4CAF50;
+  transform: scale(1.2);
+}
+
+.react-flow__connection-path {
+  stroke: #2196F3;
+  stroke-width: 2;
 }
 
 .react-flow__edge-path {
   stroke: #5a5a5a;
+  stroke-width: 2;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: #2196F3;
+  stroke-width: 3;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #2196F3;
+  stroke-width: 3;
 }
 
 .react-flow__edge-text {
@@ -350,24 +391,12 @@
   border-color: #ffffff;
 }
 
-.react-flow__handle-connecting {
-  background-color: #ff6060;
-}
-
-.react-flow__handle-valid {
-  background-color: #55dd99;
-}
-
 .react-flow__background {
   background-color: #1e1e1e;
 }
 
 .react-flow__edge-path-selector {
   stroke: transparent;
-}
-
-.react-flow__edge.selected .react-flow__edge-path {
-  stroke: #ffffff;
 }
 
 .react-flow__edge:focus .react-flow__edge-path,
@@ -458,4 +487,47 @@
   .import-export-buttons {
     justify-content: center;
   }
+}
+
+.edge-context-menu {
+  background-color: #2a2a2a;
+  border: 1px solid #3d3d3d;
+  border-radius: 6px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.edge-context-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background-color: #2d2d2d;
+  color: #ffffff;
+  border: 1px solid #3d3d3d;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.edge-context-menu button:hover {
+  background-color: #3d3d3d;
+  transform: translateY(-1px);
+}
+
+.edge-context-menu button:active {
+  background-color: #2a2a2a;
+  transform: translateY(0);
+}
+
+.context-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
 }

@@ -10,6 +10,7 @@ const nodeStyle = {
   width: "220px",
   boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
   transition: "all 0.2s ease",
+  overflow: "hidden",
 };
 
 const inputStyle = {
@@ -101,7 +102,9 @@ const NodeTypes = {
   sourceNode: {
     placeholder: "user@example.com or group:name",
     width: "220px",
-    handleConfig: [{ type: "source", position: "right" }],
+    handleConfig: [
+      { type: "source", position: "right", style: { right: -6 } }
+    ],
     validate: (value) => {
       return value.match(/^([a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+|group:[a-zA-Z0-9_-]+|tag:[a-zA-Z0-9_-]+)$/);
     }
@@ -109,7 +112,9 @@ const NodeTypes = {
   destinationNode: {
     placeholder: "192.168.1.1:80",
     width: "180px",
-    handleConfig: [{ type: "target", position: "left" }],
+    handleConfig: [
+      { type: "target", position: "left", style: { left: -6 } }
+    ],
     validate: (value) => {
       return value.match(/^[0-9.:/*]+$/);
     }
@@ -118,8 +123,8 @@ const NodeTypes = {
     placeholder: "accept or deny",
     width: "180px",
     handleConfig: [
-      { type: "target", position: "left" },
-      { type: "source", position: "right" },
+      { type: "target", position: "left", style: { left: -6 } },
+      { type: "source", position: "right", style: { right: -6 } }
     ],
     validate: (value) => {
       return ["accept", "deny"].includes(value.toLowerCase());
@@ -129,8 +134,8 @@ const NodeTypes = {
     placeholder: "tag:name",
     width: "180px",
     handleConfig: [
-      { type: "target", position: "left" },
-      { type: "source", position: "right" },
+      { type: "target", position: "left", style: { left: -6 } },
+      { type: "source", position: "right", style: { right: -6 } }
     ],
     validate: (value) => {
       return value.match(/^tag:[a-zA-Z0-9_-]+$/);

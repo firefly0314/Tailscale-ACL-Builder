@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import {
   ReactFlow,
   MiniMap,
@@ -32,6 +32,20 @@ function App() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [validationErrors, setValidationErrors] = useState([]);
   const reactFlowWrapper = useRef(null);
+  const [contextMenu, setContextMenu] = useState(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (contextMenu && !event.target.closest('.edge-context-menu')) {
+        setContextMenu(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [contextMenu]);
 
   const validateNode = useCallback((node) => {
     const errors = [];
@@ -153,8 +167,8 @@ function App() {
       let nodeId = 1;
       const verticalSpacing = 200;
       const horizontalSpacing = 300;
-      const destVerticalSpacing = 80;
-      const destHorizontalSpacing = 180;
+      const destVerticalSpacing = 100;
+      const destHorizontalSpacing = 200;
       const maxNodesPerColumn = 5;
 
       parsedAcl.acls.forEach((rule, ruleIndex) => {
@@ -288,6 +302,27 @@ function App() {
     );
   }, [setNodes]);
 
+  const onEdgeContextMenu = useCallback(
+    (event, edge) => {
+      event.preventDefault();
+      const { clientX, clientY } = event;
+      setContextMenu({
+        id: edge.id,
+        x: clientX,
+        y: clientY,
+      });
+    },
+    []
+  );
+
+  const onEdgeDelete = useCallback(
+    (edgeId) => {
+      setEdges((eds) => eds.filter((e) => e.id !== edgeId));
+      setContextMenu(null);
+    },
+    [setEdges]
+  );
+
   return (
     <div className="app-container" onKeyDown={handleKeyDown} tabIndex={0}>
       <div className="flow-container" ref={reactFlowWrapper}>
@@ -326,6 +361,7 @@ function App() {
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onNodesDelete={onNodesDelete}
+          onEdgeContextMenu={onEdgeContextMenu}
           nodeTypes={nodeTypes}
           colorMode="dark"
           fitView
@@ -334,6 +370,27 @@ function App() {
           <MiniMap />
           <Background variant="dots" gap={12} size={1} />
         </ReactFlow>
+
+        {contextMenu && (
+          <>
+            <div 
+              className="context-menu-overlay"
+              onClick={() => setContextMenu(null)}
+            />
+            <div
+              className="edge-context-menu"
+              style={{
+                position: 'fixed',
+                top: contextMenu.y,
+                left: contextMenu.x,
+              }}
+            >
+              <button onClick={() => onEdgeDelete(contextMenu.id)}>
+                Remove Connection
+              </button>
+            </div>
+          </>
+        )}
       </div>
       <Sidebar 
         nodes={nodes} 
