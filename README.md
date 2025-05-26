@@ -1,7 +1,7 @@
 # Tailscale-ACL-Builder
 
 > [!NOTE]  
-> Public deployment will be available soon at: https://tailscale-acl-builder.q4dd.com/
+> Public deployment: https://tailscale-acl-builder.q4dd.com/
 
 Build and visualize Tailscale ACLs with a reactflow diagram.
 
@@ -37,6 +37,10 @@ Build and visualize Tailscale ACLs with a reactflow diagram.
 - **HuJSON Support**:
   - Parse and validate HuJSON format
   - Maintain comments in ACL configuration
+
+## Development
+
+`bun run start`
 
 ## Contributing
 
