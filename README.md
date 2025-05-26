@@ -38,9 +38,19 @@ Build and visualize Tailscale ACLs with a reactflow diagram.
   - Parse and validate HuJSON format
   - Maintain comments in ACL configuration
 
-## Development
+## Deployment
 
-`bun run start`
+### Docker/Podman
+
+```
+docker run -p 8080:8080 ghcr.io/sudo-ivan/tailscale-acl-builder:latest
+```
+
+### Bun
+
+```
+bun run start
+```
 
 ## Contributing
 
