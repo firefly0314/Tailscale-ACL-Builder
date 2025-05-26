@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import "./App.css";
 
 // Debounce function
@@ -22,6 +22,36 @@ const parseHuJSON = (input) => {
 const Sidebar = ({ nodes, edges, onACLUpdate }) => {
   const [aclJson, setAclJson] = useState("");
   const [alert, setAlert] = useState("");
+  const [isResizing, setIsResizing] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(600);
+  const sidebarRef = useRef(null);
+
+  const startResizing = useCallback((e) => {
+    setIsResizing(true);
+    e.preventDefault();
+  }, []);
+
+  const stopResizing = useCallback(() => {
+    setIsResizing(false);
+  }, []);
+
+  const resize = useCallback((e) => {
+    if (isResizing) {
+      const newWidth = window.innerWidth - e.clientX;
+      if (newWidth > 200 && newWidth < window.innerWidth * 0.8) {
+        setSidebarWidth(newWidth);
+      }
+    }
+  }, [isResizing]);
+
+  useEffect(() => {
+    window.addEventListener('mousemove', resize);
+    window.addEventListener('mouseup', stopResizing);
+    return () => {
+      window.removeEventListener('mousemove', resize);
+      window.removeEventListener('mouseup', stopResizing);
+    };
+  }, [resize, stopResizing]);
 
   const generateACL = useCallback(() => {
     const acl = {
@@ -170,7 +200,8 @@ const Sidebar = ({ nodes, edges, onACLUpdate }) => {
   }, [aclJson, onACLUpdate, validateAndFormatACL]);
 
   return (
-    <div className="sidebar">
+    <div className="sidebar" ref={sidebarRef} style={{ width: `${sidebarWidth}px` }}>
+      <div className="resize-handle" onMouseDown={startResizing} />
       <div className="sidebar-header">
         <h2>Tailscale ACL HuJSON</h2>
         <button onClick={handleCopy} className="copy-button">

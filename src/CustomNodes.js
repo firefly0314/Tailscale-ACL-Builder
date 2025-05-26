@@ -2,28 +2,33 @@ import React, { useState, useCallback } from "react";
 import { Handle } from "@xyflow/react";
 
 const nodeStyle = {
-  padding: "10px",
-  border: "1px solid #4a4a4a",
-  borderRadius: "5px",
-  background: "#3a3a3a",
+  padding: "12px",
+  border: "2px solid #4a4a4a",
+  borderRadius: "8px",
+  background: "#2a2a2a",
   color: "#ffffff",
   width: "220px",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+  transition: "all 0.2s ease",
 };
 
 const inputStyle = {
-  margin: "5px 0",
-  padding: "5px",
-  width: "calc(100% - 10px)",
-  backgroundColor: "#2a2a2a",
+  margin: "8px 0",
+  padding: "8px 12px",
+  width: "calc(100% - 16px)",
+  backgroundColor: "#1a1a1a",
   color: "#ffffff",
-  border: "1px solid #4a4a4a",
-  borderRadius: "3px",
+  border: "1px solid #3d3d3d",
+  borderRadius: "6px",
   boxSizing: "border-box",
+  fontSize: "14px",
+  transition: "all 0.2s ease",
 };
 
 const NodeContent = ({ type, data, onChange, placeholder }) => {
   const [localData, setLocalData] = useState(data);
   const [error, setError] = useState(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleChange = useCallback(
     (e) => {
@@ -41,46 +46,77 @@ const NodeContent = ({ type, data, onChange, placeholder }) => {
     [localData, onChange, type],
   );
 
+  const getNodeTypeColor = (type) => {
+    switch (type) {
+      case 'sourceNode': return '#4CAF50';
+      case 'destinationNode': return '#2196F3';
+      case 'actionNode': return '#FF9800';
+      case 'tagNode': return '#9C27B0';
+      default: return '#4a4a4a';
+    }
+  };
+
   return (
     <div>
-      <div>{type}</div>
+      <div style={{
+        fontSize: "14px",
+        fontWeight: "600",
+        marginBottom: "8px",
+        color: getNodeTypeColor(type),
+        textTransform: "uppercase",
+        letterSpacing: "0.5px"
+      }}>
+        {type.replace('Node', '')}
+      </div>
       <input
         style={{
           ...inputStyle,
-          borderColor: error ? '#ff6060' : '#4a4a4a'
+          borderColor: error ? '#ff4444' : isFocused ? getNodeTypeColor(type) : '#3d3d3d',
+          boxShadow: isFocused ? `0 0 0 2px ${getNodeTypeColor(type)}33` : 'none'
         }}
         name="value"
         value={localData.value || ""}
         onChange={handleChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
       />
-      {error && <div style={{ color: '#ff6060', fontSize: '0.8em' }}>{error}</div>}
+      {error && (
+        <div style={{ 
+          color: '#ff4444', 
+          fontSize: '12px', 
+          marginTop: '4px',
+          padding: '4px 8px',
+          backgroundColor: '#ff444411',
+          borderRadius: '4px'
+        }}>
+          {error}
+        </div>
+      )}
     </div>
   );
 };
 
 const NodeTypes = {
   sourceNode: {
-    placeholder: "Enter user, group:name, or tag:name",
+    placeholder: "user@example.com or group:name",
     width: "220px",
     handleConfig: [{ type: "source", position: "right" }],
     validate: (value) => {
-      // Validate user email, group:name, or tag:name format
       return value.match(/^([a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+|group:[a-zA-Z0-9_-]+|tag:[a-zA-Z0-9_-]+)$/);
     }
   },
   destinationNode: {
-    placeholder: "Enter IP:port",
-    width: "120px",
+    placeholder: "192.168.1.1:80",
+    width: "180px",
     handleConfig: [{ type: "target", position: "left" }],
     validate: (value) => {
-      // Validate IP:port format
       return value.match(/^[0-9.:/*]+$/);
     }
   },
   actionNode: {
-    placeholder: "Enter action (accept/deny)",
-    width: "220px",
+    placeholder: "accept or deny",
+    width: "180px",
     handleConfig: [
       { type: "target", position: "left" },
       { type: "source", position: "right" },
@@ -90,8 +126,8 @@ const NodeTypes = {
     }
   },
   tagNode: {
-    placeholder: "Enter tag name",
-    width: "220px",
+    placeholder: "tag:name",
+    width: "180px",
     handleConfig: [
       { type: "target", position: "left" },
       { type: "source", position: "right" },

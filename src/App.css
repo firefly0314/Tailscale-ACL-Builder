@@ -106,14 +106,32 @@
 }
 
 .sidebar {
-  width: min(600px, 40vw);
   height: 100%;
   overflow-y: auto;
   background-color: #1e1e1e;
   padding: 24px;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
   border-left: 1px solid #2d2d2d;
-  transition: width 0.3s ease;
+  transition: width 0.1s ease;
+  position: relative;
+  min-width: 200px;
+  max-width: 80vw;
+}
+
+.resize-handle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: col-resize;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.resize-handle:hover,
+.resize-handle:active {
+  background-color: #4d4d4d;
 }
 
 .sidebar.collapsed {
@@ -204,7 +222,7 @@
   right: 0;
   padding: 16px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 16px;
   z-index: 4;
@@ -214,6 +232,36 @@
 .import-export-buttons {
   display: flex;
   gap: 8px;
+  margin-left: 200px;
+}
+
+.import-export-buttons button {
+  padding: 8px 16px;
+  background-color: #2d2d2d;
+  color: #ffffff;
+  border: 1px solid #3d3d3d;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 100px;
+}
+
+.import-export-buttons button:hover {
+  background-color: #3d3d3d;
+  transform: translateY(-1px);
+  border-color: #4d4d4d;
+}
+
+.import-export-buttons button:active {
+  background-color: #2a2a2a;
+  transform: translateY(0);
+}
+
+.import-export-buttons button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
 }
 
 .alert {
@@ -369,10 +417,20 @@
   }
 
   .sidebar {
-    width: 100%;
+    width: 100% !important;
     height: 40vh;
     border-left: none;
     border-top: 1px solid #2d2d2d;
+  }
+
+  .resize-handle {
+    left: 0;
+    right: 0;
+    top: -4px;
+    bottom: auto;
+    height: 4px;
+    width: auto;
+    cursor: row-resize;
   }
 
   .sidebar.collapsed {
