@@ -52,6 +52,14 @@ docker run -p 8080:8080 ghcr.io/sudo-ivan/tailscale-acl-builder:latest
 bun run start
 ```
 
+## To Do
+
+- [ ] Templates for common ACLs
+- [ ] More tailscale ACL sytax support 
+- [ ] Auto-visualize 
+- [ ] Error Syntax highlighting for HuJSON
+- [ ] Fix synchronization issues between the sidebar and the nodes/graph
+
 ## Contributing
 
 Feel free to open an issue or submit a PR to improve the project.
