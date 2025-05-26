@@ -1,6 +1,7 @@
 # Tailscale-ACL-Builder
 
-https://tailscale-acl-builder.vercel.app/
+> [!NOTE]  
+> Public deployment will be available soon at: https://tailscale-acl-builder.q4dd.com/
 
 Build and visualize Tailscale ACLs with a reactflow diagram.
 
