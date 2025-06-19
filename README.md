@@ -55,7 +55,7 @@ bun run start
 ## To Do
 
 - [ ] Templates for common ACLs
-- [ ] More tailscale ACL sytax support 
+- [ ] More tailscale ACL syntax support
 - [ ] Auto-visualize 
 - [ ] Error Syntax highlighting for HuJSON
 - [ ] Fix synchronization issues between the sidebar and the nodes/graph
