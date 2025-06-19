@@ -53,7 +53,7 @@ const Sidebar = ({ nodes, edges, onACLUpdate }) => {
     };
   }, [resize, stopResizing]);
 
-  const generateACL = useCallback(() => {
+const generateACL = useCallback(() => {
     const acl = {
       acls: [],
       ssh: [
@@ -120,7 +120,19 @@ const Sidebar = ({ nodes, edges, onACLUpdate }) => {
     });
 
     acl.acls = Array.from(ruleMap.values());
-    return JSON.stringify(acl, null, 2);
+    const grants = acl.acls.map(rule => {
+      const dst = [];
+      const ip = new Set();
+      rule.dst.forEach(d => {
+        const [host, ports] = d.split(":");
+        dst.push(host);
+        if (ports) {
+          ports.split(',').forEach(p => ip.add(p));
+        }
+      });
+      return { src: rule.src, dst, ip: Array.from(ip) };
+    });
+    return JSON.stringify({ grants }, null, 2);
   }, [nodes, edges]);
 
   useEffect(() => {

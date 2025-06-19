@@ -17,6 +17,24 @@ import { validateACLSyntax } from "./utils/aclValidation";
 import "./App.css";
 import { NODE_TYPES, VALID_ACTIONS } from "./constants";
 
+const convertGrantsToACLs = (grants) => {
+  if (!Array.isArray(grants)) return [];
+  return grants.map((grant) => {
+    const dst = [];
+    const ips = grant.ip && Array.isArray(grant.ip) ? grant.ip : ["*"];
+    (grant.dst || []).forEach((d) => {
+      ips.forEach((ip) => {
+        dst.push(`${d}:${ip}`);
+      });
+    });
+    return {
+      action: "accept",
+      src: grant.src || [],
+      dst,
+    };
+  });
+};
+
 const nodeTypes = {
   sourceNode: SourceNode,
   destinationNode: DestinationNode,
@@ -266,7 +284,10 @@ function App() {
         return;
       }
       
-      handleACLUpdate(parsedContent);
+      const aclData = parsedContent.grants && !parsedContent.acls
+        ? { acls: convertGrantsToACLs(parsedContent.grants) }
+        : parsedContent;
+      handleACLUpdate(aclData);
       setValidationErrors([]);
     } catch (err) {
       setValidationErrors(['Invalid JSON format']);

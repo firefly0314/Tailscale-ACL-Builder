@@ -37,6 +37,9 @@ Build and visualize Tailscale ACLs with a reactflow diagram.
 - **HuJSON Support**:
   - Parse and validate HuJSON format
   - Maintain comments in ACL configuration
+- **Grants Syntax**:
+  - インポートしたgrants構文のポリシーを可視化
+  - ノードから作成した設定をgrants形式でエクスポート
 
 ## Deployment
 
